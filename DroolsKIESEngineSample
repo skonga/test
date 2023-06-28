@@ -1,0 +1,97 @@
+public class Account {
+    private String accountNumber;
+    private double balance;
+    // Other properties, getters, setters, and constructors
+}
+
+
+public class Transaction {
+    private String transactionId;
+    private String accountNumber;
+    private double amount;
+    // Other properties, getters, setters, and constructors
+}
+
+Now, let's define a few rules that could apply to these classes:
+
+Rule 1: Detect High-Value Transactions
+
+rule "High-Value Transaction"
+when
+    $transaction: Transaction(amount > 10000)
+then
+    System.out.println("High-value transaction detected: " + $transaction.getTransactionId());
+end
+
+This rule Ty triggers whenever a transaction with an amount greater than 10,000 is encountered and prints a message to the console
+
+
+Rule 2: Apply Transaction Fee
+
+rule "Transaction Fee"
+when
+    $transaction: Transaction(amount > 1000)
+    $account: Account(accountNumber == $transaction.getAccountNumber())
+then
+    double fee = $transaction.getAmount() * 0.05;
+    $account.setBalance($account.getBalance() - fee);
+    update($account);
+end
+
+This rule applies a transaction fee of 5% to the account whenever a transaction with an amount greater than 1,000 is encountered.
+
+To use Drools to load and execute these rules in a Java application, follow the steps outlined in a previous response:
+
+Include the Drools dependencies in your project.
+Initialize the KieServices object.
+Load the KieContainer.
+Create a KieSession.
+Insert the objects (Account and Transaction) into the working memory.
+Fire the rules.
+Here's an example of how you can implement it:
+
+import org.kie.api.KieServices;
+import org.kie.api.runtime.KieContainer;
+import org.kie.api.runtime.KieSession;
+
+public class BankingApplication {
+    public static void main(String[] args) {
+        // Initialize Drools
+        KieServices kieServices = KieServices.Factory.get();
+        KieContainer kieContainer = kieServices.getKieClasspathContainer();
+        KieSession kieSession = kieContainer.newKieSession();
+
+        // Create Account
+        Account account = new Account("123456789", 50000.0);
+
+        // Create Transactions
+        Transaction transaction1 = new Transaction("T001", "123456789", 15000.0);
+        Transaction transaction2 = new Transaction("T002", "123456789", 2000.0);
+
+        // Insert objects into the working memory
+        kieSession.insert(account);
+        kieSession.insert(transaction1);
+        kieSession.insert(transaction2);
+
+        // Fire the rules
+        kieSession.fireAllRules();
+
+        // Print updated account balance
+        System.out.println("Updated account balance: " + account.getBalance());
+
+        // Dispose of the session
+        kieSession.dispose();
+    }
+}
+
+
+When you run this Java application, the rules will be executed based on the data provided, and the appropriate actions will be triggered. In this case, the "High-Value Transaction" rule will print a message to the console, and the "Transaction Fee" rule will deduct the transaction fee from the account balance.
+
+Remember to customize the rules, classes, and actions according to your specific banking application requirements.
+
+
+
+
+
+
+
