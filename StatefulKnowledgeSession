@@ -1,0 +1,3 @@
+'it's worth noting that starting from Drools 7, the concept of StatefulKnowledgeSession has been replaced by the KieSession, which provides similar functionality but with improved performance and better integration capabilities.
+
+The term "StatefulKnowledgeSession" is associated with the Drools rule engine, specifically with the earlier versions of Drools (prior to version 7). Drools is a popular open-source rule engine that allows you to define and execute business rules in various applications.
